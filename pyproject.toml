@@ -1,0 +1,131 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metatally"
+version = "0.1.0"
+description = "State-counting tools for sampling combinatorial metastable spaces."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Marcello Sega", email = "m.sega@ucl.ac.uk" },
+    { name = "Imogen Daisy Smith", email = "imogen.smith.23@ucl.ac.uk" }
+]
+keywords = [
+    "enhanced-sampling",
+    "metadynamics",
+    "monte-carlo",
+    "state-counting",
+    "metastability",
+    "chemical-physics",
+    "statistical-mechanics",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+dependencies = [
+    "numpy>=1.23",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+]
+plot = [
+    "matplotlib>=3.8",
+]
+notebooks = [
+    "jupyter>=1.0",
+    "ipykernel>=6.29",
+]
+all = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+    "matplotlib>=3.8",
+    "jupyter>=1.0",
+    "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/Marcello-Sega/MetaTally"
+Repository = "https://github.com/Marcello-Sega/MetaTally"
+Issues = "https://github.com/Marcello-Sega/MetaTally/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["metatally*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+]
+pythonpath = ["."]
+
+[tool.coverage.run]
+source = ["metatally"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # import sorting
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "SIM",  # simplifications
+]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["metatally"]
+
+[tool.mypy]
+python_version = "3.10"
+packages = ["metatally"]
+warn_unused_configs = true
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "matplotlib.*",
+]
+ignore_missing_imports = true
