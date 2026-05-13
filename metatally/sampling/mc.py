@@ -228,6 +228,7 @@ class MetropolisSampler:
 
     def run(self, n_steps: int, progress: bool) -> "MetropolisSampler":
         """Run ``n_steps`` additional MC steps and return ``self``."""
+        visited,old=0,0
         n_steps = int(n_steps)
         if n_steps < 1:
             raise ValueError("n_steps must be >= 1.")
@@ -237,7 +238,14 @@ class MetropolisSampler:
         else: 
             iterable = range(nsteps)
 
-        for _ in iterable: self.step()
+        for _ in iterable: 
+            self.step()
+            if progress:
+                visited = self.n_visited
+                if visited > old: 
+                    old = visited
+                    fraction = 100*visited/self.state_space.n_states
+                    iterable.set_postfix_str(f"visited: {visited} / {self.state_space.n_states} = {fraction:3.3f}%")
         return self
 
     def reset(

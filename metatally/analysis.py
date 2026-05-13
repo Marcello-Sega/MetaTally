@@ -96,7 +96,7 @@ def free_energy_differences(
     probabilities: ArrayLike,
     *,
     beta: float = 1.0,
-    reference: int = 0,
+    reference: int | None = None,
 ) -> FloatArray:
     """
     Compute state free-energy differences relative to a reference state.
@@ -117,8 +117,9 @@ def free_energy_differences(
         Inverse thermal energy, ``1/(k_B T)``. The returned free energies are
         in the corresponding energy units.
     reference
-        Encoded state label used as zero of free energy. The default is
-        ``reference=0``.
+        Encoded state label used as zero of free energy. The default is None 
+        and selects the state with minimum free energy. Otherwise, pass an
+        integer to select a reference state.
 
     Returns
     -------
@@ -143,6 +144,8 @@ def free_energy_differences(
     beta = float(beta)
     if beta <= 0.0 or not np.isfinite(beta):
         raise ValueError("beta must be finite and > 0.")
+    if reference is None: 
+        reference = np.argmax(probabilities)
     reference = int(reference)
     if reference < 0 or reference >= p.size:
         raise ValueError(f"reference out of range. Expected 0 <= reference < {p.size}.")
@@ -159,7 +162,7 @@ def free_energy_differences_from_visits(
     visits: ArrayLike,
     *,
     beta: float = 1.0,
-    reference: int = 0,
+    reference: int | None = None,
     pseudocount: float = 0.0,
 ) -> FloatArray:
     """
@@ -256,7 +259,7 @@ def reweighted_free_energy_differences(
     *,
     beta: float = 1.0,
     n_states: int | None = None,
-    reference: int = 0,
+    reference: int | None = None,
 ) -> FloatArray:
     """
     Compute free-energy differences from biased samples by reweighting.
