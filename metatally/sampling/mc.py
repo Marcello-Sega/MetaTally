@@ -122,6 +122,10 @@ class MetropolisSampler:
     _energies: list[float] = field(init=False, repr=False)
     _accepted: list[bool] = field(init=False, repr=False)
     _bias_values: list[float] = field(init=False, repr=False)
+    _states_array: IntegerArray | None = field(init=False, default=None, repr=False)
+    _energies_array: FloatArray | None = field(init=False, default=None, repr=False)
+    _accepted_array: BoolArray | None = field(init=False, default=None, repr=False)
+    _bias_values_array: FloatArray | None = field(init=False, default=None, repr=False)
     visits: IntegerArray = field(init=False)
 
     def __post_init__(self) -> None:
@@ -144,23 +148,31 @@ class MetropolisSampler:
 
     @property
     def states(self) -> IntegerArray:
-        """Encoded global-state trajectory."""
-        return np.asarray(self._states, dtype=np.int64)
+        """Encoded global-state trajectory as a lazily materialised array."""
+        if self._states_array is None:
+            self._states_array = np.asarray(self._states, dtype=np.int64)
+        return self._states_array
 
     @property
     def energies(self) -> FloatArray:
-        """Physical energy trajectory after each MC step."""
-        return np.asarray(self._energies, dtype=float)
+        """Physical energy trajectory as a lazily materialised array."""
+        if self._energies_array is None:
+            self._energies_array = np.asarray(self._energies, dtype=float)
+        return self._energies_array
 
     @property
     def accepted(self) -> BoolArray:
-        """Boolean acceptance trajectory."""
-        return np.asarray(self._accepted, dtype=bool)
+        """Boolean acceptance trajectory as a lazily materialised array."""
+        if self._accepted_array is None:
+            self._accepted_array = np.asarray(self._accepted, dtype=bool)
+        return self._accepted_array
 
     @property
     def bias_values(self) -> FloatArray:
-        """Total bias value recorded before each bias update."""
-        return np.asarray(self._bias_values, dtype=float)
+        """Total bias history as a lazily materialised array."""
+        if self._bias_values_array is None:
+            self._bias_values_array = np.asarray(self._bias_values, dtype=float)
+        return self._bias_values_array
 
     @property
     def steps(self) -> IntegerArray:
@@ -182,7 +194,7 @@ class MetropolisSampler:
         """Fraction of accepted MC moves."""
         if self.n_steps == 0:
             return 0.0
-        return float(np.mean(self.accepted))
+        return float(sum(self._accepted) / self.n_steps)
 
     @property
     def n_unique_by_step(self) -> IntegerArray:
@@ -218,34 +230,46 @@ class MetropolisSampler:
         self._record(accept, current_bias)
         return accept
 
+    def _invalidate_history_cache(self) -> None:
+        """Invalidate cached NumPy arrays after appending trajectory data."""
+        self._states_array = None
+        self._energies_array = None
+        self._accepted_array = None
+        self._bias_values_array = None
+
     def _record(self, accepted: bool, bias_value: float) -> None:
         """Append the current state to trajectory statistics."""
         self._states.append(int(self.xi))
         self._energies.append(float(self.energy))
         self._accepted.append(bool(accepted))
         self._bias_values.append(float(bias_value))
+        self._invalidate_history_cache()
         self.visits[int(self.xi)] += 1
 
-    def run(self, n_steps: int, progress: bool) -> "MetropolisSampler":
+    def run(self, n_steps: int, progress: bool = False) -> "MetropolisSampler":
         """Run ``n_steps`` additional MC steps and return ``self``."""
         visited,old=0,0
         n_steps = int(n_steps)
         if n_steps < 1:
             raise ValueError("n_steps must be >= 1.")
 
-        if progress and progress_bar_available: 
+        show_progress = bool(progress and progress_bar_available)
+        if show_progress:
             iterable = tqdm(range(n_steps))
-        else: 
-            iterable = range(nsteps)
+        else:
+            iterable = range(n_steps)
 
-        for _ in iterable: 
+        for _ in iterable:
             self.step()
-            if progress:
+            if show_progress:
                 visited = self.n_visited
-                if visited > old: 
+                if visited > old:
                     old = visited
-                    fraction = 100*visited/self.state_space.n_states
-                    iterable.set_postfix_str(f"visited: {visited} / {self.state_space.n_states} = {fraction:3.3f}%")
+                    fraction = 100 * visited / self.state_space.n_states
+                    f100 = np.sum(np.bincount(self.states, minlength=self.state_space.n_states)>100)*100/self.state_space.n_states
+                    iterable.set_postfix_str(
+                        f"visited: {visited} / {self.state_space.n_states} = {fraction:3.3f}% | visited 100x =  {f100:3.3f}%"
+                    )
         return self
 
     def reset(
@@ -264,6 +288,7 @@ class MetropolisSampler:
         self._energies = []
         self._accepted = []
         self._bias_values = []
+        self._invalidate_history_cache()
         self.visits = np.zeros(int(self.state_space.n_states), dtype=np.int64)
         if reset_bias:
             self.bias.reset()
