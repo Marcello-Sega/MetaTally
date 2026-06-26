@@ -1,0 +1,90 @@
+phi1: TORSION ATOMS=1,5,8,11
+phiwrap1: CUSTOM ARG=phi1 VAR=x FUNC=x-2*pi*step(x-pi)+2*pi*step(-x-pi) PERIODIC=NO
+r1: CUSTOM ARG=phiwrap1 VAR=x FUNC=x+pi PERIODIC=NO
+
+trans0_1: CUSTOM ARG=r1 VAR=x FUNC=(1-((x-0)/(pi/3))^24)/(1-((x-0)/(pi/3))^48) PERIODIC=NO
+trans2pi_1: CUSTOM ARG=r1 VAR=x FUNC=(1-((x-2*pi)/(pi/3))^24)/(1-((x-2*pi)/(pi/3))^48) PERIODIC=NO
+trans1: COMBINE ARG=trans0_1,trans2pi_1 COEFFICIENTS=1,1 POWERS=1,1 PERIODIC=NO
+gminus1: CUSTOM ARG=r1 VAR=x FUNC=(1-((x-2*pi/3)/(pi/3))^24)/(1-((x-2*pi/3)/(pi/3))^48) PERIODIC=NO
+gplus1:  CUSTOM ARG=r1 VAR=x FUNC=(1-((x-4*pi/3)/(pi/3))^24)/(1-((x-4*pi/3)/(pi/3))^48) PERIODIC=NO
+a1: COMBINE ARG=gplus1,trans1,gminus1 COEFFICIENTS=0,1,2 POWERS=1,1,1 PERIODIC=NO
+
+phi2: TORSION ATOMS=5,8,11,14
+phiwrap2: CUSTOM ARG=phi2 VAR=x FUNC=x-2*pi*step(x-pi)+2*pi*step(-x-pi) PERIODIC=NO
+r2: CUSTOM ARG=phiwrap2 VAR=x FUNC=x+pi PERIODIC=NO
+
+trans0_2: CUSTOM ARG=r2 VAR=x FUNC=(1-((x-0)/(pi/3))^24)/(1-((x-0)/(pi/3))^48) PERIODIC=NO
+trans2pi_2: CUSTOM ARG=r2 VAR=x FUNC=(1-((x-2*pi)/(pi/3))^24)/(1-((x-2*pi)/(pi/3))^48) PERIODIC=NO
+trans2: COMBINE ARG=trans0_2,trans2pi_2 COEFFICIENTS=1,1 POWERS=1,1 PERIODIC=NO
+gminus2: CUSTOM ARG=r2 VAR=x FUNC=(1-((x-2*pi/3)/(pi/3))^24)/(1-((x-2*pi/3)/(pi/3))^48) PERIODIC=NO
+gplus2:  CUSTOM ARG=r2 VAR=x FUNC=(1-((x-4*pi/3)/(pi/3))^24)/(1-((x-4*pi/3)/(pi/3))^48) PERIODIC=NO
+a2: COMBINE ARG=gplus2,trans2,gminus2 COEFFICIENTS=0,1,2 POWERS=1,1,1 PERIODIC=NO
+
+phi3: TORSION ATOMS=8,11,14,17
+phiwrap3: CUSTOM ARG=phi3 VAR=x FUNC=x-2*pi*step(x-pi)+2*pi*step(-x-pi) PERIODIC=NO
+r3: CUSTOM ARG=phiwrap3 VAR=x FUNC=x+pi PERIODIC=NO
+
+trans0_3: CUSTOM ARG=r3 VAR=x FUNC=(1-((x-0)/(pi/3))^24)/(1-((x-0)/(pi/3))^48) PERIODIC=NO
+trans2pi_3: CUSTOM ARG=r3 VAR=x FUNC=(1-((x-2*pi)/(pi/3))^24)/(1-((x-2*pi)/(pi/3))^48) PERIODIC=NO
+trans3: COMBINE ARG=trans0_3,trans2pi_3 COEFFICIENTS=1,1 POWERS=1,1 PERIODIC=NO
+gminus3: CUSTOM ARG=r3 VAR=x FUNC=(1-((x-2*pi/3)/(pi/3))^24)/(1-((x-2*pi/3)/(pi/3))^48) PERIODIC=NO
+gplus3:  CUSTOM ARG=r3 VAR=x FUNC=(1-((x-4*pi/3)/(pi/3))^24)/(1-((x-4*pi/3)/(pi/3))^48) PERIODIC=NO
+a3: COMBINE ARG=gplus3,trans3,gminus3 COEFFICIENTS=0,1,2 POWERS=1,1,1 PERIODIC=NO
+
+phi4: TORSION ATOMS=11,14,17,20
+phiwrap4: CUSTOM ARG=phi4 VAR=x FUNC=x-2*pi*step(x-pi)+2*pi*step(-x-pi) PERIODIC=NO
+r4: CUSTOM ARG=phiwrap4 VAR=x FUNC=x+pi PERIODIC=NO
+
+trans0_4: CUSTOM ARG=r4 VAR=x FUNC=(1-((x-0)/(pi/3))^24)/(1-((x-0)/(pi/3))^48) PERIODIC=NO
+trans2pi_4: CUSTOM ARG=r4 VAR=x FUNC=(1-((x-2*pi)/(pi/3))^24)/(1-((x-2*pi)/(pi/3))^48) PERIODIC=NO
+trans4: COMBINE ARG=trans0_4,trans2pi_4 COEFFICIENTS=1,1 POWERS=1,1 PERIODIC=NO
+gminus4: CUSTOM ARG=r4 VAR=x FUNC=(1-((x-2*pi/3)/(pi/3))^24)/(1-((x-2*pi/3)/(pi/3))^48) PERIODIC=NO
+gplus4:  CUSTOM ARG=r4 VAR=x FUNC=(1-((x-4*pi/3)/(pi/3))^24)/(1-((x-4*pi/3)/(pi/3))^48) PERIODIC=NO
+a4: COMBINE ARG=gplus4,trans4,gminus4 COEFFICIENTS=0,1,2 POWERS=1,1,1 PERIODIC=NO
+
+phi5: TORSION ATOMS=14,17,20,23
+phiwrap5: CUSTOM ARG=phi5 VAR=x FUNC=x-2*pi*step(x-pi)+2*pi*step(-x-pi) PERIODIC=NO
+r5: CUSTOM ARG=phiwrap5 VAR=x FUNC=x+pi PERIODIC=NO
+
+trans0_5: CUSTOM ARG=r5 VAR=x FUNC=(1-((x-0)/(pi/3))^24)/(1-((x-0)/(pi/3))^48) PERIODIC=NO
+trans2pi_5: CUSTOM ARG=r5 VAR=x FUNC=(1-((x-2*pi)/(pi/3))^24)/(1-((x-2*pi)/(pi/3))^48) PERIODIC=NO
+trans5: COMBINE ARG=trans0_5,trans2pi_5 COEFFICIENTS=1,1 POWERS=1,1 PERIODIC=NO
+gminus5: CUSTOM ARG=r5 VAR=x FUNC=(1-((x-2*pi/3)/(pi/3))^24)/(1-((x-2*pi/3)/(pi/3))^48) PERIODIC=NO
+gplus5:  CUSTOM ARG=r5 VAR=x FUNC=(1-((x-4*pi/3)/(pi/3))^24)/(1-((x-4*pi/3)/(pi/3))^48) PERIODIC=NO
+a5: COMBINE ARG=gplus5,trans5,gminus5 COEFFICIENTS=0,1,2 POWERS=1,1,1 PERIODIC=NO
+
+phi6: TORSION ATOMS=17,20,23,26
+phiwrap6: CUSTOM ARG=phi6 VAR=x FUNC=x-2*pi*step(x-pi)+2*pi*step(-x-pi) PERIODIC=NO
+r6: CUSTOM ARG=phiwrap6 VAR=x FUNC=x+pi PERIODIC=NO
+
+trans0_6: CUSTOM ARG=r6 VAR=x FUNC=(1-((x-0)/(pi/3))^24)/(1-((x-0)/(pi/3))^48) PERIODIC=NO
+trans2pi_6: CUSTOM ARG=r6 VAR=x FUNC=(1-((x-2*pi)/(pi/3))^24)/(1-((x-2*pi)/(pi/3))^48) PERIODIC=NO
+trans6: COMBINE ARG=trans0_6,trans2pi_6 COEFFICIENTS=1,1 POWERS=1,1 PERIODIC=NO
+gminus6: CUSTOM ARG=r6 VAR=x FUNC=(1-((x-2*pi/3)/(pi/3))^24)/(1-((x-2*pi/3)/(pi/3))^48) PERIODIC=NO
+gplus6:  CUSTOM ARG=r6 VAR=x FUNC=(1-((x-4*pi/3)/(pi/3))^24)/(1-((x-4*pi/3)/(pi/3))^48) PERIODIC=NO
+a6: COMBINE ARG=gplus6,trans6,gminus6 COEFFICIENTS=0,1,2 POWERS=1,1,1 PERIODIC=NO
+
+phi7: TORSION ATOMS=20,23,26,27
+phiwrap7: CUSTOM ARG=phi7 VAR=x FUNC=x-2*pi*step(x-pi)+2*pi*step(-x-pi) PERIODIC=NO
+r7: CUSTOM ARG=phiwrap7 VAR=x FUNC=x+pi PERIODIC=NO
+
+trans0_7: CUSTOM ARG=r7 VAR=x FUNC=(1-((x-0)/(pi/3))^24)/(1-((x-0)/(pi/3))^48) PERIODIC=NO
+trans2pi_7: CUSTOM ARG=r7 VAR=x FUNC=(1-((x-2*pi)/(pi/3))^24)/(1-((x-2*pi)/(pi/3))^48) PERIODIC=NO
+trans7: COMBINE ARG=trans0_7,trans2pi_7 COEFFICIENTS=1,1 POWERS=1,1 PERIODIC=NO
+gminus7: CUSTOM ARG=r7 VAR=x FUNC=(1-((x-2*pi/3)/(pi/3))^24)/(1-((x-2*pi/3)/(pi/3))^48) PERIODIC=NO
+gplus7:  CUSTOM ARG=r7 VAR=x FUNC=(1-((x-4*pi/3)/(pi/3))^24)/(1-((x-4*pi/3)/(pi/3))^48) PERIODIC=NO
+a7: COMBINE ARG=gplus7,trans7,gminus7 COEFFICIENTS=0,1,2 POWERS=1,1,1 PERIODIC=NO
+
+zeta: COMBINE ARG=a1,a2,a3,a4,a5,a6,a7 COEFFICIENTS=1,3,9,27,81,243,729 POWERS=1,1,1,1,1,1,1 PERIODIC=NO
+
+zeta1: COMBINE ARG=zeta COEFFICIENTS=1 POWERS=1 PERIODIC=NO
+zeta2: COMBINE ARG=zeta COEFFICIENTS=1 POWERS=1 PERIODIC=NO
+zeta3: COMBINE ARG=zeta COEFFICIENTS=1 POWERS=1 PERIODIC=NO
+zeta4: COMBINE ARG=zeta COEFFICIENTS=1 POWERS=1 PERIODIC=NO
+zeta5: COMBINE ARG=zeta COEFFICIENTS=1 POWERS=1 PERIODIC=NO
+zeta6: COMBINE ARG=zeta COEFFICIENTS=1 POWERS=1 PERIODIC=NO
+zeta7: COMBINE ARG=zeta COEFFICIENTS=1 POWERS=1 PERIODIC=NO
+
+pb: PBMETAD ARG=zeta1,phi1,zeta2,phi2,zeta3,phi3,zeta4,phi4,zeta5,phi5,zeta6,phi6,zeta7,phi7 BIASARG0=zeta1,phi1 BIASARG1=zeta2,phi2 BIASARG2=zeta3,phi3 BIASARG3=zeta4,phi4 BIASARG4=zeta5,phi5 BIASARG5=zeta6,phi6 BIASARG6=zeta7,phi7 SIGMA=0.2,0.2,0.2,0.2,0.2,0.2,0.2 HEIGHT=0.1 PACE=500 TEMP=300 FILE=H0,H1,H2,H3,H4,H5,H6
+
+PRINT ARG=zeta,a1,a2,a3,a4,a5,a6,a7,phi1,phi2,phi3,phi4,phi5,phi6,phi7,pb.bias STRIDE=1 FILE=COLVAR
